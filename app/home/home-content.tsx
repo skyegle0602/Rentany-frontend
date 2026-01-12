@@ -1,15 +1,46 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import HowItWorks from "@/components/Home/HowItWorks";
 import RecentlyViewed from "@/components/Home/RecentlyViewed";
 import FeaturedItems from "@/components/Home/FeaturedItems";
 import Testerminal from "@/components/Home/Testerminal";
 import TrustBadges from "@/components/Home/TrustBadge";
+import ItemFilters from "@/components/Items/ItemFilters";
 import { useLanguage } from "@/components/Language/LanguageContext";
+
+type CategoryValue = "all" | "electronics" | "tools" | "fashion" | "sports" | "vehicles" | "home" | "books" | "music" | "photography" | "other";
+type SortByType = "relevance" | "price_low" | "price_high" | "rating" | "newest" | "popular";
+type AvailabilityFilterType = "all" | "available" | "unavailable";
+type ViewType = "list" | "map";
 
 export default function HomeContent() {
   const { t } = useLanguage();
+  
+  // Filter state
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [locationQuery, setLocationQuery] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<CategoryValue>("all");
+  const [priceRange, setPriceRange] = useState<{ min: string; max: string }>({ min: "", max: "" });
+  const [availabilityFilter, setAvailabilityFilter] = useState<AvailabilityFilterType>("all");
+  const [distanceFilter, setDistanceFilter] = useState<{ enabled: boolean; maxDistance: number; centerLocation: string }>({
+    enabled: false,
+    maxDistance: 10,
+    centerLocation: ""
+  });
+  const [dateFilter, setDateFilter] = useState<{ enabled: boolean; start_date: string; end_date: string }>({
+    enabled: false,
+    start_date: "",
+    end_date: ""
+  });
+  const [ratingFilter, setRatingFilter] = useState<{ enabled: boolean; min_rating: number }>({
+    enabled: false,
+    min_rating: 4
+  });
+  const [sortBy, setSortBy] = useState<SortByType>("relevance");
+  const [view, setView] = useState<ViewType>("list");
+  const [locationError, setLocationError] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -104,6 +135,36 @@ export default function HomeContent() {
           <TrustBadges />
         </div>
       </div>
+      
+      {/* Item Filters Section */}
+      <div className="bg-white py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ItemFilters
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            locationQuery={locationQuery}
+            setLocationQuery={setLocationQuery}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            priceRange={priceRange}
+            setPriceRange={setPriceRange}
+            availabilityFilter={availabilityFilter}
+            setAvailabilityFilter={setAvailabilityFilter}
+            distanceFilter={distanceFilter}
+            setDistanceFilter={setDistanceFilter}
+            dateFilter={dateFilter}
+            setDateFilter={setDateFilter}
+            ratingFilter={ratingFilter}
+            setRatingFilter={setRatingFilter}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            locationError={locationError}
+            view={view}
+            setView={setView}
+          />
+        </div>
+      </div>
+      
       {/* Recently Viewed Section */}
       <RecentlyViewed />
       {/* Featured Items Section */}
