@@ -24,3 +24,38 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Hide Clerk modals globally - comprehensive selectors */
+[data-clerk-modal],
+.cl-modal,
+.cl-modalBackdrop,
+.cl-modalContent,
+.cl-rootBox,
+.cl-card,
+div[role="dialog"][aria-modal="true"],
+div[data-clerk-element="modal"],
+div[data-clerk-element="modalBackdrop"],
+div[data-clerk-element="modalContent"],
+.cl-component,
+.cl-verificationPage,
+.cl-emailVerificationPage,
+.cl-phoneVerificationPage {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  position: fixed !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  z-index: -1 !important;
+}
+
+/* Also hide any overlay/backdrop */
+.cl-modalBackdrop,
+[data-clerk-modal] > div,
+.cl-overlay {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
